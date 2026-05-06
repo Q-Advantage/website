@@ -1,2 +1,2 @@
 # website
-Official website for Q-Advantage.com
+Official website for Q-Advantage.io
