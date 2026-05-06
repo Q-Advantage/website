@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q-Advantage — The intelligence layer for the quantum era</title>
+<meta name="description" content="Q-Advantage builds independent, public benchmarks for the quantum era. Q-Day Index, Q-Shield, Q-Arena — measurable signal, transparent methodology, daily on GitHub.">
+<link rel="canonical" href="https://qadvantage.io/">
+
+<meta property="og:title" content="Q-Advantage — The intelligence layer for the quantum era">
+<meta property="og:description" content="Daily benchmarks. Open methodology. Auditable on GitHub.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://qadvantage.io/">
+<meta property="og:site_name" content="Q-Advantage">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Q-Advantage — The intelligence layer for the quantum era">
+<meta name="twitter:description" content="Daily benchmarks. Open methodology. Auditable on GitHub.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #0A0A0B;
+    --bg-elevated: #111114;
+    --bg-card: #0E0E11;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --text: #EDEDED;
+    --text-secondary: #A1A1A6;
+    --text-tertiary: #6B6B72;
+    --accent: #4ADE80;
+    --accent-glow: rgba(74, 222, 128, 0.4);
+    --warning: #FBBF24;
+    --danger: #F87171;
+    --serif: 'Instrument Serif', 'Times New Roman', serif;
+    --sans: 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: 'Geist Mono', 'SF Mono', Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 400;
+    line-height: 1.55;
+    overflow-x: hidden;
+    position: relative;
+    letter-spacing: -0.005em;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1200px;
+    height: 1200px;
+    background: radial-gradient(circle, rgba(74, 222, 128, 0.06) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: overlay;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+    position: relative;
+    z-index: 2;
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(10, 10, 11, 0.7);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .nav-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .logo {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo-mark {
+    width: 22px;
+    height: 22px;
+    border: 1.2px solid var(--text);
+    border-radius: 3px;
+    position: relative;
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+  .logo-mark::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-left: 1.2px solid var(--text);
+    border-bottom: 1.2px solid var(--text);
+  }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
+  .nav-links a {
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    font-size: 13px;
+    padding: 8px 16px;
+    background: var(--text);
+    color: var(--bg);
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    letter-spacing: 0;
+  }
+  .nav-cta:hover { opacity: 0.92; transform: translateY(-1px); }
+
+  .hero {
+    padding: 120px 0 100px;
+    position: relative;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    padding: 6px 12px;
+    border: 0.5px solid var(--border-strong);
+    border-radius: 100px;
+    margin-bottom: 32px;
+  }
+  .eyebrow-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(48px, 7vw, 88px);
+    font-weight: 400;
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    color: var(--text);
+    margin-bottom: 28px;
+  }
+  h1 em { font-style: italic; opacity: 0.95; }
+
+  .hero-sub {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+    max-width: 520px;
+    margin-bottom: 40px;
+    font-weight: 300;
+  }
+  .hero-ctas {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 22px;
+    background: var(--text);
+    color: var(--bg);
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+  .btn-primary:hover { transform: translateY(-1px); opacity: 0.95; }
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 22px;
+    background: transparent;
+    color: var(--text);
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 400;
+    border: 0.5px solid var(--border-strong);
+    transition: border-color 0.15s ease;
+  }
+  .btn-secondary:hover { border-color: var(--text-secondary); }
+
+  .qday-card {
+    background: var(--bg-card);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .qday-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(74, 222, 128, 0.04) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .qday-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .qday-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-tertiary);
+  }
+  .qday-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--warning);
+    padding: 3px 8px;
+    border: 0.5px solid rgba(251, 191, 36, 0.3);
+    border-radius: 100px;
+  }
+  .qday-score {
+    font-family: var(--serif);
+    font-size: 96px;
+    line-height: 1;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: -0.04em;
+    margin-bottom: 8px;
+    position: relative;
+  }
+  .qday-score-suffix {
+    font-family: var(--mono);
+    font-size: 16px;
+    color: var(--text-tertiary);
+    margin-left: 4px;
+    vertical-align: super;
+  }
+  .qday-delta {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 28px;
+    position: relative;
+  }
+  .qday-delta-up { color: var(--warning); }
+  .qday-divider {
+    height: 0.5px;
+    background: var(--border);
+    margin: 20px 0;
+  }
+  .qday-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .qday-row span:first-child { color: var(--text-tertiary); }
+  .qday-row span:last-child { color: var(--text-secondary); }
+  .qday-footer {
+    margin-top: 24px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    position: relative;
+  }
+  .qday-footer a {
+    color: var(--text-tertiary);
+    text-decoration: none;
+    border-bottom: 0.5px dotted var(--text-tertiary);
+  }
+
+  .trust-strip {
+    border-top: 0.5px solid var(--border);
+    border-bottom: 0.5px solid var(--border);
+    padding: 32px 0;
+    margin: 40px 0 0;
+  }
+  .trust-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+  .trust-item {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: 0.02em;
+  }
+  .trust-item::before {
+    content: '';
+    width: 5px; height: 5px;
+    background: var(--text-tertiary);
+    border-radius: 50%;
+  }
+
+  section.products { padding: 120px 0; }
+  .section-header {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 72px;
+  }
+  .section-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-tertiary);
+    margin-bottom: 20px;
+  }
+  h2 {
+    font-family: var(--serif);
+    font-size: clamp(36px, 4.5vw, 56px);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  h2 em { font-style: italic; }
+  .section-sub {
+    font-size: 17px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    font-weight: 300;
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .product-card {
+    background: var(--bg-card);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .product-card:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-2px);
+  }
+  .product-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-tertiary);
+    padding: 4px 10px;
+    border: 0.5px solid var(--border-strong);
+    border-radius: 100px;
+    margin-bottom: 24px;
+  }
+  .product-status.preview {
+    color: var(--warning);
+    border-color: rgba(251, 191, 36, 0.3);
+  }
+  .product-status.preview::before {
+    content: '';
+    width: 5px; height: 5px;
+    background: var(--warning);
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(251, 191, 36, 0.5);
+  }
+  .product-name {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .product-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-tertiary);
+    margin-bottom: 20px;
+  }
+  .product-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+  }
+  .product-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .product-link::after {
+    content: '→';
+    transition: transform 0.15s ease;
+  }
+  .product-link:hover::after { transform: translateX(3px); }
+  .product-link.disabled {
+    color: var(--text-tertiary);
+    pointer-events: none;
+  }
+
+  section.methodology {
+    padding: 80px 0 120px;
+    border-top: 0.5px solid var(--border);
+  }
+  .method-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .method-pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .pillar {
+    border-left: 1px solid var(--border-strong);
+    padding-left: 24px;
+  }
+  .pillar-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+  .pillar-title {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .pillar-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  section.subscribe {
+    padding: 100px 0;
+    border-top: 0.5px solid var(--border);
+    text-align: center;
+  }
+  .subscribe-inner {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .subscribe h2 { margin-bottom: 16px; }
+  .subscribe-sub {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    line-height: 1.65;
+  }
+  .subscribe-audience {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 36px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .subscribe-audience span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .subscribe-audience span::before {
+    content: '';
+    width: 4px; height: 4px;
+    background: var(--text-tertiary);
+    border-radius: 50%;
+  }
+  .email-form {
+    display: flex;
+    gap: 8px;
+    background: var(--bg-card);
+    border: 0.5px solid var(--border-strong);
+    border-radius: 10px;
+    padding: 6px;
+    transition: border-color 0.2s ease;
+  }
+  .email-form:focus-within { border-color: var(--text-secondary); }
+  .email-form input {
+    flex: 1;
+    background: transparent;
+    border: 0;
+    color: var(--text);
+    padding: 12px 14px;
+    font-size: 15px;
+    font-family: var(--sans);
+    outline: 0;
+  }
+  .email-form input::placeholder { color: var(--text-tertiary); }
+  .email-form button {
+    background: var(--text);
+    color: var(--bg);
+    border: 0;
+    padding: 12px 22px;
+    border-radius: 6px;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+  }
+  .email-form button:hover { opacity: 0.92; }
+  .email-form button:disabled { cursor: not-allowed; opacity: 0.6; }
+  .subscribe-meta {
+    margin-top: 20px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.05em;
+  }
+  .form-message {
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--accent);
+    min-height: 18px;
+    transition: opacity 0.2s ease;
+  }
+  .form-message.error { color: var(--danger); }
+  .beehiiv-fallback { display: none; margin-top: 12px; }
+  .beehiiv-fallback.visible { display: block; }
+  .beehiiv-fallback-note {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+    font-family: var(--mono);
+  }
+
+  footer {
+    border-top: 0.5px solid var(--border);
+    padding: 48px 0 40px;
+  }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.05em;
+  }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.15s ease;
+  }
+  .footer-links a:hover { color: var(--text); }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(8px);
+    animation: reveal 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+  .reveal-1 { animation-delay: 0.05s; }
+  .reveal-2 { animation-delay: 0.15s; }
+  .reveal-3 { animation-delay: 0.25s; }
+  .reveal-4 { animation-delay: 0.35s; }
+  .reveal-5 { animation-delay: 0.45s; }
+  @keyframes reveal {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 56px; }
+    .products-grid { grid-template-columns: 1fr; }
+    .method-grid { grid-template-columns: 1fr; gap: 48px; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .hero { padding: 80px 0 60px; }
+    section.products, section.methodology, section.subscribe { padding: 80px 0; }
+    .container { padding: 0 24px; }
+    .nav-inner { padding: 16px 24px; }
+    .email-form { flex-direction: column; gap: 6px; }
+    .email-form button { width: 100%; padding: 14px; }
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+    .trust-inner { gap: 24px; }
+    .qday-score { font-size: 72px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo">
+      <span class="logo-mark"></span>
+      Q-Advantage
+    </a>
+    <div class="nav-links">
+      <a href="#products">Products</a>
+      <a href="#methodology">Methodology</a>
+      <a href="https://github.com/Q-Advantage" target="_blank" rel="noopener">GitHub</a>
+      <a href="#subscribe" class="nav-cta">Subscribe</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow reveal reveal-1">
+          <span class="eyebrow-dot"></span>
+          Daily benchmarks · Open methodology · Auditable on GitHub
+        </div>
+        <h1 class="reveal reveal-2">
+          The intelligence layer for the <em>quantum era.</em>
+        </h1>
+        <p class="hero-sub reveal reveal-3">
+          Independent benchmarks for the technology that will rewrite cryptography. Public methodology. Auditable results. No analyst paywalls.
+        </p>
+        <!-- A/B TEST CTA OPTIONS — primary button text candidates:
+             1. "Subscribe to the briefing"        ← current default (honest from day 1)
+             2. "Join 250+ subscribers"            ← swap to once you actually have 250+
+             3. "Get the weekly briefing"
+             4. "Read the latest issue"          -->
+        <div class="hero-ctas reveal reveal-4">
+          <a href="#subscribe" class="btn-primary">
+            Subscribe to the briefing
+            <span>→</span>
+          </a>
+          <a href="#methodology" class="btn-secondary">
+            Read methodology
+          </a>
+        </div>
+      </div>
+
+      <div class="qday-card reveal reveal-3">
+        <div class="qday-header">
+          <span class="qday-label">Q-Day Index · Preview</span>
+          <span class="qday-live">Sample data</span>
+        </div>
+        <div>
+          <span class="qday-score">2.7</span><span class="qday-score-suffix">/10</span>
+        </div>
+        <div class="qday-delta">
+          <span class="qday-delta-up">▲ +0.1</span> vs. last month
+        </div>
+
+        <div class="qday-divider"></div>
+
+        <div class="qday-row">
+          <span>IBM Eagle r3</span>
+          <span>2.4</span>
+        </div>
+        <div class="qday-row">
+          <span>IonQ Aria-1</span>
+          <span>2.7</span>
+        </div>
+        <div class="qday-row">
+          <span>Quantinuum H2</span>
+          <span>3.1</span>
+        </div>
+
+        <div class="qday-footer">
+          Live index launching with <a href="#methodology">v1 methodology</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="trust-strip reveal reveal-5">
+      <div class="trust-inner">
+        <div class="trust-item">Daily GitHub Actions runs</div>
+        <div class="trust-item">Open methodology</div>
+        <div class="trust-item">Reproducible results</div>
+        <div class="trust-item">Vendor-neutral</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="products" id="products">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">What we measure</div>
+      <h2>Three benchmarks that <em>matter.</em></h2>
+      <p class="section-sub">
+        From the threat horizon to the cryptography that replaces what quantum will break — measured, scored, and made public.
+      </p>
+    </div>
+
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-status preview">In preview</div>
+        <div class="product-name">Q-Day Index</div>
+        <div class="product-tag">The threat horizon</div>
+        <p class="product-desc">
+          A composite, transparent score for how close current quantum hardware is to breaking RSA-2048 and ECC-256. Updated as vendor specs change.
+        </p>
+        <a href="#subscribe" class="product-link">Get alerts on changes</a>
+      </div>
+
+      <div class="product-card">
+        <div class="product-status">Launching soon</div>
+        <div class="product-name">Q-Shield</div>
+        <div class="product-tag">PQC benchmarks · daily</div>
+        <p class="product-desc">
+          Daily independent performance benchmarks for ML-KEM, ML-DSA, and SLH-DSA. Latency, throughput, key sizes — measured on auditable infrastructure.
+        </p>
+        <a class="product-link disabled">Daily benchmarks soon</a>
+      </div>
+
+      <div class="product-card">
+        <div class="product-status">Launching soon</div>
+        <div class="product-name">Q-Arena</div>
+        <div class="product-tag">Algorithm leaderboard</div>
+        <p class="product-desc">
+          Real quantum algorithms run on real quantum hardware. Shor's, Grover's, VQE — success rates, circuit depths, and shot counts, fully transparent.
+        </p>
+        <a class="product-link disabled">Hardware leaderboard soon</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="methodology" id="methodology">
+  <div class="container">
+    <div class="method-grid">
+      <div>
+        <div class="section-eyebrow">Methodology</div>
+        <h2>Transparency is the <em>moat.</em></h2>
+        <p class="section-sub" style="margin-top: 24px;">
+          The quantum industry runs on press releases and analyst PDFs. Q-Advantage runs on GitHub Actions logs.
+        </p>
+        <div style="margin-top: 32px;">
+          <a href="https://github.com/Q-Advantage/website/blob/main/docs/METHODOLOGY.md" class="btn-secondary" target="_blank" rel="noopener">
+            View full methodology
+          </a>
+        </div>
+      </div>
+
+      <div class="method-pillars">
+        <div class="pillar">
+          <div class="pillar-num">01</div>
+          <div class="pillar-title">Every benchmark, public</div>
+          <div class="pillar-desc">
+            Source code, test parameters, and full result sets live in a public repo. Nothing happens behind a paywall or under NDA.
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">02</div>
+          <div class="pillar-title">Every run, auditable</div>
+          <div class="pillar-desc">
+            Benchmarks execute on scheduled GitHub Actions. Every workflow log is public. Every result commit is timestamped and signed.
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">03</div>
+          <div class="pillar-title">Every score, reproducible</div>
+          <div class="pillar-desc">
+            Clone the repo, run the workflow yourself, get the same numbers. The methodology document is the contract.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="subscribe" id="subscribe">
+  <div class="container">
+    <div class="subscribe-inner">
+      <div class="section-eyebrow">The briefing</div>
+      <h2>Signal, not <em>noise.</em></h2>
+      <p class="subscribe-sub">
+        One email a week. New benchmark results, Q-Day Index movements, and analysis on the companies and countries shaping the quantum industry.
+      </p>
+      <div class="subscribe-audience">
+        <span>Security leaders</span>
+        <span>Investors</span>
+        <span>Researchers</span>
+      </div>
+
+      <!-- HYBRID BEEHIIV INTEGRATION
+           Primary: custom-styled form posts to Beehiiv API.
+           Fallback: if API call fails (CORS/rate-limit/wrong-id),
+                    Beehiiv's hosted form auto-loads in the same spot. -->
+      <form class="email-form" id="subscribe-form"
+            data-beehiiv-id="pub_35f460b0-f280-4235-8f99-6aaf2421ebe5">
+        <input type="email" name="email" placeholder="you@company.com" required autocomplete="email">
+        <button type="submit">Subscribe</button>
+      </form>
+      <div class="form-message" id="form-message"></div>
+
+      <!-- Hidden by default; revealed if the API path fails -->
+      <div class="beehiiv-fallback" id="beehiiv-fallback">
+        <div class="beehiiv-fallback-note">Loading subscription form…</div>
+        <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="9bb18ee4-68c2-4d72-bdd2-a08227138570"></script>
+      </div>
+
+      <noscript>
+        <div style="margin-top: 20px; font-size: 13px; color: var(--text-secondary);">
+          JavaScript is required to subscribe. Email us at
+          <a href="mailto:hello@qadvantage.io" style="color: var(--text);">hello@qadvantage.io</a>
+          and we'll add you manually.
+        </div>
+      </noscript>
+
+      <div class="subscribe-meta">
+        Free · Unsubscribe anytime · Powered by Beehiiv
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <span>© 2026 Q-Advantage</span>
+        <span>·</span>
+        <span>Built in public</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/Q-Advantage" target="_blank" rel="noopener">GitHub</a>
+        <a href="#" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/Q-Advantage/website/blob/main/docs/METHODOLOGY.md" target="_blank" rel="noopener">Methodology</a>
+        <a href="mailto:hello@qadvantage.io">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Hybrid Beehiiv integration:
+  //   1. Try the v2 publication subscription API (custom form, full visual control)
+  //   2. If it fails for any reason → reveal the Beehiiv hosted form below
+  //
+  // The ID below was provided as a Beehiiv ID. Beehiiv's API expects a Publication ID
+  // (typically prefixed `pub_`). If this UUID is actually a Form ID, the API call will
+  // 404 and the fallback will auto-engage. Either way the user always gets a working form.
+
+  const form = document.getElementById('subscribe-form');
+  const message = document.getElementById('form-message');
+  const fallback = document.getElementById('beehiiv-fallback');
+  const beehiivId = form.dataset.beehiivId;
+
+  function showFallback(reason) {
+    // Hide custom form, show Beehiiv hosted form
+    form.style.display = 'none';
+    message.textContent = '';
+    fallback.classList.add('visible');
+    // The note disappears once Beehiiv's script renders its iframe
+    setTimeout(() => {
+      const note = fallback.querySelector('.beehiiv-fallback-note');
+      if (note) note.style.display = 'none';
+    }, 1500);
+    if (window.console) console.info('Beehiiv fallback engaged:', reason);
+  }
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const input = form.querySelector('input[name="email"]');
+    const button = form.querySelector('button');
+    const email = input.value.trim();
+
+    if (!email) return;
+
+    const originalText = button.textContent;
+    button.textContent = 'Subscribing…';
+    button.disabled = true;
+    message.textContent = '';
+    message.classList.remove('error');
+
+    try {
+      const response = await fetch(`https://api.beehiiv.com/v2/publications/${beehiivId}/subscriptions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email,
+          reactivate_existing: true,
+          send_welcome_email: true,
+          utm_source: 'qadvantage.io',
+          utm_medium: 'website',
+          utm_campaign: 'landing-page'
+        })
+      });
+
+      if (response.ok) {
+        message.textContent = '✓ Subscribed. Check your inbox to confirm.';
+        input.value = '';
+        button.textContent = originalText;
+        button.disabled = false;
+      } else {
+        // API rejected the request — likely wrong ID type or wrong endpoint
+        showFallback(`API responded ${response.status}`);
+      }
+    } catch (err) {
+      // Network error, CORS, or any other failure → fall back gracefully
+      showFallback(err.message || 'network error');
+    }
+  });
+</script>
+
+</body>
+</html>
