@@ -907,45 +907,46 @@
 </footer>
 
 <script>
-  // Beehiiv form submission via their public form endpoint.
-  // Same endpoint Beehiiv's own iframe embed posts to — works without an API key.
-  const FORM_ID = '9bb18ee4-68c2-4d72-bdd2-a08227138570';
-  const form = document.getElementById('subscribe-form');
-  const message = document.getElementById('form-message');
+const form = document.getElementById('subscribe-form');
+const message = document.getElementById('form-message');
 
-  form.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const input = form.querySelector('input[name="email"]');
-    const button = form.querySelector('button');
-    const email = input.value.trim();
-    if (!email) return;
+form.addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const input = form.querySelector('input[name="email"]');
+  const button = form.querySelector('button');
+  const email = input.value.trim();
+  if (!email) return;
 
-    const originalText = button.textContent;
-    button.textContent = 'Subscribing…';
-    button.disabled = true;
-    message.textContent = '';
-    message.classList.remove('error');
+  const originalText = button.textContent;
+  button.textContent = 'Subscribing…';
+  button.disabled = true;
+  message.textContent = '';
+  message.classList.remove('error');
 
-    try {
-      const formData = new FormData();
-      formData.append('email', email);
+  try {
+    const response = await fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email })
+    });
 
-      await fetch('https://subscribe-forms.beehiiv.com/' + FORM_ID + '/submit', {
-        method: 'POST',
-        mode: 'no-cors',
-        body: formData
-      });
+    const data = await response.json();
 
+    if (response.ok) {
       message.textContent = '✓ Subscribed. Check your inbox to confirm.';
       input.value = '';
-    } catch (err) {
-      message.textContent = 'Something went wrong. Email hello@qadvantage.io and we\'ll add you.';
+    } else {
+      message.textContent = data.error || 'Something went wrong. Try again.';
       message.classList.add('error');
-    } finally {
-      button.textContent = originalText;
-      button.disabled = false;
     }
-  });
+  } catch (err) {
+    message.textContent = 'Network error. Email hello@qadvantage.io and we\'ll add you.';
+    message.classList.add('error');
+  } finally {
+    button.textContent = originalText;
+    button.disabled = false;
+  }
+});
 </script>
 
 </body>
